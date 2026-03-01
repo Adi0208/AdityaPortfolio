@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aditya Kumar Gautam — Cloud Data Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:          #0A0A0A;
+      --bg-card:     #111111;
+      --bg-mid:      #141414;
+      --border:      rgba(255,255,255,0.06);
+      --border-hi:   rgba(255,255,255,0.18);
+      --white:       #F5F5F0;
+      --text:        #A0A09A;
+      --text-muted:  #555550;
+      --accent:      #E8E4D9;   /* warm off-white accent */
+      --accent2:     #C8C4B4;
+      --gold:        #D4C5A0;   /* warm parchment */
+      --gold-dim:    rgba(212,197,160,0.08);
+      --gold-border: rgba(212,197,160,0.25);
+    }
+
+    [data-theme="light"] {
+      --bg:          #F5F5F0;
+      --bg-card:     #FFFFFF;
+      --bg-mid:      #EEEDE8;
+      --border:      rgba(0,0,0,0.07);
+      --border-hi:   rgba(0,0,0,0.18);
+      --white:       #0A0A0A;
+      --text:        #4A4A44;
+      --text-muted:  #999990;
+      --accent:      #1A1A14;
+      --accent2:     #3A3A34;
+      --gold:        #8B7355;
+      --gold-dim:    rgba(139,115,85,0.07);
+      --gold-border: rgba(139,115,85,0.25);
+    }
+
+    [data-theme="light"] nav { background: rgba(245,245,240,0.95); }
+    [data-theme="light"] .orb-1, [data-theme="light"] .orb-2 { display: none; }
+    [data-theme="light"] #about, [data-theme="light"] #experience, [data-theme="light"] #certifications { background: none; }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-1 { width: 600px; height: 600px; background: rgba(212,197,160,0.04); top: -200px; right: -150px; }
+    .orb-2 { width: 500px; height: 500px; background: rgba(212,197,160,0.025); bottom: 10%; left: -150px; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.25rem max(2rem, calc(50% - 640px));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10,10,10,0.94);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 400;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0; right: 0;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 9rem max(4rem, calc(50% - 620px)) 5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content { max-width: 720px; }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      font-weight: 400;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.1s;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 8vw, 6.5rem);
+      font-weight: 700;
+      line-height: 0.95;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.02em;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.25s;
+    }
+
+    .hero-name em {
+      color: var(--gold);
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    .hero-title {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.4s;
+    }
+
+    .hero-desc {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: var(--text);
+      max-width: 580px;
+      margin-bottom: 3rem;
+      font-family: 'DM Mono', monospace;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.55s;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.7s;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 2rem;
+      background: var(--gold);
+      color: var(--bg);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(212,197,160,0.2);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 2rem;
+      border: 1px solid var(--border-hi);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 400;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: var(--gold-dim);
+      transform: translateY(-2px);
+    }
+
+    /* stats */
+    .hero-stats {
+      position: absolute;
+      right: max(4rem, calc(50% - 620px));
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      opacity: 0;
+      animation: fadeInRight 0.9s ease forwards 0.9s;
+    }
+
+    .stat-item { text-align: right; }
+
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    .stat-divider { width: 100%; height: 1px; background: var(--border); }
+
+    /* SECTIONS */
+    section {
+      padding: 6rem max(4rem, calc(50% - 620px));
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-header { margin-bottom: 3.5rem; }
+
+    .section-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 50px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    /* ABOUT */
+    .about-grid { max-width: 820px; display: flex; flex-direction: column; gap: 2rem; }
+
+    .about-highlights { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .about-text p {
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      font-size: 0.88rem;
+      line-height: 1.95;
+    }
+
+    .highlight-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      padding: 1.2rem 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--gold);
+      margin-bottom: 0.75rem;
+      transition: all 0.3s;
+    }
+
+    .highlight-item:hover { background: var(--gold-dim); transform: translateX(5px); border-left-color: var(--accent); }
+    .highlight-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+    .highlight-text strong {
+      display: block;
+      color: var(--white);
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 0.15rem;
+      letter-spacing: 0.04em;
+    }
+
+    .highlight-text span { font-size: 0.73rem; color: var(--text-muted); }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .skill-card {
+      padding: 2rem;
+      background: var(--bg-card);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s;
+    }
+
+    .skill-card:hover { background: var(--bg-mid); }
+    .skill-card:hover::before { transform: scaleX(1); }
+
+    .skill-card-icon { font-size: 1.6rem; margin-bottom: 0.9rem; }
+    .skill-card-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    .skill-tag {
+      padding: 0.25rem 0.65rem;
+      font-size: 0.68rem;
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      color: var(--text);
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+
+    .skill-tag:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+    /* EXPERIENCE */
+    #experience { background: linear-gradient(180deg, transparent, rgba(212,197,160,0.015), transparent); }
+
+    .experience-inner { max-width: 860px; }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 3.5rem;
+      margin-bottom: 3.5rem;
+      position: relative;
+    }
+
+    .exp-item::after {
+      content: '';
+      position: absolute;
+      left: 149px;
+      top: 18px;
+      bottom: -3.5rem;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    .exp-item:last-child::after { display: none; }
+
+    .exp-meta { text-align: right; padding-top: 0.3rem; }
+
+    .exp-date {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      font-weight: 400;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.4rem;
+      line-height: 1.7;
+    }
+
+    .exp-company-side { font-size: 0.72rem; color: var(--text-muted); }
+
+    .exp-dot {
+      position: absolute;
+      left: 141px;
+      top: 10px;
+      width: 18px; height: 18px;
+      border: 1px solid var(--gold);
+      background: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .exp-dot::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    .exp-role {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .exp-company-name {
+      font-size: 0.7rem;
+      color: var(--gold);
+      font-weight: 400;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+
+    .exp-bullets li {
+      font-size: 0.83rem;
+      color: var(--text);
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+      line-height: 1.7;
+    }
+
+    .exp-bullets li::before { content: '→'; color: var(--gold); flex-shrink: 0; font-size: 0.75rem; margin-top: 0.15rem; }
+    .exp-highlight { color: var(--accent2); font-weight: 500; }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      padding: 2rem;
+      transition: all 0.35s;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(212,197,160,0.03) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .project-card:hover { background: var(--bg-mid); }
+
+    .project-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 700;
+      color: rgba(212,197,160,0.07);
+      line-height: 1;
+      position: absolute;
+      top: 0.8rem; right: 1.2rem;
+      letter-spacing: -0.04em;
+    }
+
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem; }
+
+    .project-tag {
+      padding: 0.15rem 0.55rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--gold-dim);
+      color: var(--gold);
+      border: 1px solid var(--gold-border);
+      font-weight: 400;
+    }
+
+    .project-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.7rem;
+      line-height: 1.3;
+    }
+
+    .project-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.65rem;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 400;
+      transition: gap 0.2s;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: auto;
+    }
+
+    .project-link:hover { gap: 0.9rem; color: var(--accent2); }
+
+    /* CERTIFICATIONS — redesigned */
+    .creds-certs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+
+    .cred-cert-card {
+      background: var(--bg-card);
+      padding: 2rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: background 0.3s;
+      overflow: hidden;
+    }
+
+    .cred-cert-card:hover { background: var(--bg-mid); }
+
+    .cred-cert-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+
+    .cred-year {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+    }
+
+    .cred-issuer {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .cred-cert-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+
+    .cred-cert-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.3;
+    }
+
+    .cred-cert-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .cred-cert-card:hover .cred-cert-bar { transform: scaleX(1); }
+
+    .creds-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .creds-label::after {
+      content: '';
+      flex: 1;
+      max-width: 40px;
+      height: 1px;
+      background: var(--border-hi);
+    }
+
+    .creds-awards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .cred-award-card {
+      background: var(--bg-card);
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: background 0.3s, border-left-color 0.3s;
+      border-left: 2px solid transparent;
+    }
+
+    .cred-award-card:hover {
+      background: var(--gold-dim);
+      border-left-color: var(--gold);
+    }
+
+    .cred-award-meta {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .cred-award-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--accent2);
+    }
+
+    .cred-award-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* CONTACT */
+    .contact-inner { max-width: 620px; }
+    .contact-desc { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 2.5rem; line-height: 1.9; }
+
+    .contact-links {
+      display: flex;
+      gap: 1px;
+      flex-wrap: wrap;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+      display: inline-flex;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 1.6rem;
+      background: var(--bg-card);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+
+    .contact-link:hover {
+      background: var(--gold-dim);
+      color: var(--gold);
+    }
+
+    .contact-link svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
+    footer span { color: var(--gold); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translate(28px, -50%); }
+      to { opacity: 1; transform: translate(0, -50%); }
+    }
+
+    .reveal { opacity: 1; transform: none; }
+
+    section:not(#hero) {
+      animation: sectionFade 0.6s ease both;
+    }
+
+    @keyframes sectionFade {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .skill-card, .project-card, .cert-card, .achievement-item, .highlight-item {
+      transition: background 0.3s, transform 0.3s, border-color 0.3s;
+    }
+
+    /* BACK TO TOP */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      width: 40px; height: 40px;
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      z-index: 500;
+    }
+
+    .back-to-top.visible { opacity: 1; transform: translateY(0); }
+    .back-to-top:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(212,197,160,0.2); }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span { display: block; width: 22px; height: 1px; background: var(--text); transition: all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 8rem 1.5rem 4rem; }
+      .hero-stats { display: none; }
+      .hero-name { font-size: 3rem; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .exp-item::after, .exp-dot { display: none; }
+      .exp-meta { text-align: left; }
+      .hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 62px; left: 0; right: 0;
+        background: var(--bg-mid);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        padding: 1.5rem 2rem;
+        gap: 1.5rem;
+        z-index: 999;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 0.85rem; }
+      .contact-links { display: flex; flex-direction: column; }
+      .skills-grid, .projects-grid { grid-template-columns: 1fr; }
+      .creds-certs, .creds-awards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#hero">AKG</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme" onclick="
+      var h = document.documentElement;
+      var isLight = h.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        h.removeAttribute('data-theme');
+        this.textContent = '🌙';
+      } else {
+        h.setAttribute('data-theme', 'light');
+        this.textContent = '☀️';
+      }
+    ">🌙</button>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-content">
+      <div class="hero-tag">Cloud Data Engineer · Google Operations Center</div>
+      <h1 class="hero-name">Aditya<br/>Kumar <em>Gautam</em></h1>
+      <p class="hero-title">GCP · Scalable Data Platforms · AI-Ready Architectures</p>
+      <p class="hero-desc">
+        Cloud Data Engineer with 6.5+ years designing production-grade data platforms on Google Cloud. Building scalable ETL/ELT pipelines, optimizing distributed query performance, and architecting AI-ready data systems that drive measurable business outcomes.
+      </p>
+      <div class="hero-ctas">
+        <a href="#about" class="btn-primary">Explore →</a>
+        <a href="https://www.linkedin.com/in/aditya-kumar-gautam-421a09185/" target="_blank" class="btn-outline">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://adi0208.github.io/Portfolio/" target="_blank" class="btn-outline" download>
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Resume
+        </a>
+        <a href="/cdn-cgi/l/email-protection#f392979a878a929690c2c3c3c5b3949e929a9fdd909c9e" class="btn-outline">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email Me
+        </a>
+      </div>
+    </div>
+
+
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header">
+      <div class="section-label">01 — About</div>
+      <h2 class="section-title">Passionate about<br/>Data at Scale</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a Cloud Data Engineer at Google Operations Center with deep expertise in building robust, scalable data infrastructure on GCP. My focus spans ETL pipeline design, SQL optimization at enterprise scale, and cloud-native architectures that solve real business problems with measurable impact.</p>
+        <p>With 6.5+ years across Google Operations Center and Wipro, I bring a systems-level mindset to every data challenge — from ingestion through transformation to analytical delivery. I thrive in Agile environments, collaborating closely with business stakeholders, architects, and cross-functional teams.</p>
+      </div>
+      <div class="about-highlights">
+        <div class="highlight-item">
+          <div class="highlight-icon">☁️</div>
+          <div class="highlight-text">
+            <strong>GCP Specialist</strong>
+            <span>BigQuery, Dataflow, Pub/Sub, Cloud SQL, Cloud Run</span>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-icon">⚡</div>
+          <div class="highlight-text">
+            <strong>Pipeline Architect</strong>
+            <span>Batch & Streaming ETL/ELT, Salesforce migrations, Workflow Automation</span>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-icon">🤖</div>
+          <div class="highlight-text">
+            <strong>AI-Ready Systems</strong>
+            <span>Feature Engineering, ML Data Preparation, Generative AI Fundamentals</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-header">
+      <div class="section-label">02 — Skills</div>
+      <h2 class="section-title">Technical Arsenal</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-icon">🔷</div>
+        <div class="skill-card-title">Languages</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Advanced SQL</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Pandas</span>
+          <span class="skill-tag">NumPy</span>
+          <span class="skill-tag">APIs</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">☁️</div>
+        <div class="skill-card-title">Cloud & GCP</div>
+        <div class="skill-tags">
+          <span class="skill-tag">BigQuery</span>
+          <span class="skill-tag">Cloud SQL</span>
+          <span class="skill-tag">Dataflow</span>
+          <span class="skill-tag">Pub/Sub</span>
+          <span class="skill-tag">Cloud Storage</span>
+          <span class="skill-tag">Cloud Run</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">🔄</div>
+        <div class="skill-card-title">Data Engineering</div>
+        <div class="skill-tags">
+          <span class="skill-tag">ETL / ELT</span>
+          <span class="skill-tag">Data Modeling</span>
+          <span class="skill-tag">Batch & Streaming</span>
+          <span class="skill-tag">Data Migration</span>
+          <span class="skill-tag">Workflow Automation</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">🗄️</div>
+        <div class="skill-card-title">Databases</div>
+        <div class="skill-tags">
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">Query Optimization</span>
+          <span class="skill-tag">Indexing</span>
+          <span class="skill-tag">Partitioning</span>
+          <span class="skill-tag">Dimensional Modeling</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">📊</div>
+        <div class="skill-card-title">BI & Visualization</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Looker</span>
+          <span class="skill-tag">BI Tools</span>
+          <span class="skill-tag">Dashboard Design</span>
+          <span class="skill-tag">KPI Reporting</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">⚙️</div>
+        <div class="skill-card-title">Tools & Practices</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">CI/CD</span>
+          <span class="skill-tag">Agile</span>
+          <span class="skill-tag">Feature Engineering</span>
+          <span class="skill-tag">Generative AI</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-header">
+      <div class="section-label">03 — Projects</div>
+      <h2 class="section-title">Things I've Built</h2>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-number">01</div>
+        <div class="project-tags"><span class="project-tag">BigQuery</span><span class="project-tag">Dataflow</span><span class="project-tag">GCP</span></div>
+        <div class="project-title">Scalable ETL Pipeline — GCP Data Platform</div>
+        <p class="project-desc">End-to-end ETL pipeline on Google Cloud ingesting structured and semi-structured datasets. Leverages Dataflow for streaming, BigQuery for warehousing, and Cloud Run for orchestration with automated monitoring.</p>
+        <a href="https://adi0208.github.io/Portfolio/" target="_blank" class="project-link">View Resume →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-number">02</div>
+        <div class="project-tags"><span class="project-tag">Salesforce</span><span class="project-tag">BigQuery</span><span class="project-tag">Python</span></div>
+        <div class="project-title">Salesforce → GCP Data Migration</div>
+        <p class="project-desc">Enterprise-scale data migration from Salesforce to Google Cloud achieving 99%+ accuracy. Includes validation frameworks, reconciliation checks, and automated quality gates ensuring zero data loss at scale.</p>
+        <a href="https://adi0208.github.io/Portfolio/" target="_blank" class="project-link">View Resume →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-number">03</div>
+        <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">SQL</span><span class="project-tag">Automation</span></div>
+        <div class="project-title">Automated Reporting Framework</div>
+        <p class="project-desc">SQL + Python automation framework replacing manual reporting workflows — cutting effort by 30%+. Standardized ingestion APIs, reusable pipeline components, and real-time monitoring dashboards for business-critical KPIs.</p>
+        <a href="https://adi0208.github.io/Portfolio/" target="_blank" class="project-link">View Resume →</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-number">04</div>
+        <div class="project-tags"><span class="project-tag">Pub/Sub</span><span class="project-tag">Dataflow</span><span class="project-tag">Streaming</span></div>
+        <div class="project-title">Real-Time Streaming Data Pipeline</div>
+        <p class="project-desc">Streaming architecture using GCP Pub/Sub and Dataflow for real-time event ingestion and processing. Implements data validation, schema enforcement, and downstream delivery to BigQuery with 95%+ SLA compliance.</p>
+        <a href="https://adi0208.github.io/Portfolio/" target="_blank" class="project-link">View Resume →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS & AWARDS -->
+  <section id="certifications">
+    <div class="section-header">
+      <div class="section-label">04 — Credentials</div>
+      <h2 class="section-title">Certifications &<br/>Recognition</h2>
+    </div>
+
+    <!-- Certs row -->
+    <div class="creds-certs">
+      <div class="cred-cert-card">
+        <div class="cred-cert-top">
+          <span class="cred-year">2026</span>
+          <span class="cred-issuer">Google</span>
+        </div>
+        <div class="cred-cert-icon">☁️</div>
+        <div class="cred-cert-name">Google Cloud Digital Leader</div>
+        <div class="cred-cert-bar"></div>
+      </div>
+      <div class="cred-cert-card">
+        <div class="cred-cert-top">
+          <span class="cred-year">2022</span>
+          <span class="cred-issuer">NASSCOM & Jigsaw</span>
+        </div>
+        <div class="cred-cert-icon">📈</div>
+        <div class="cred-cert-name">Full-Stack Data Science</div>
+        <div class="cred-cert-bar"></div>
+      </div>
+      <div class="cred-cert-card">
+        <div class="cred-cert-top">
+          <span class="cred-year">2018</span>
+          <span class="cred-issuer">IIT Kanpur</span>
+        </div>
+        <div class="cred-cert-icon">🔬</div>
+        <div class="cred-cert-name">Automation Intelligence & IoT</div>
+        <div class="cred-cert-bar"></div>
+      </div>
+    </div>
+
+    <!-- Awards row -->
+    <div class="creds-label">Awards & Recognition</div>
+    <div class="creds-awards">
+      <div class="cred-award-card">
+        <div class="cred-award-meta">Google Operations Center · 2024</div>
+        <div class="cred-award-title">⭐ Star Award</div>
+        <p class="cred-award-desc">Exceptional contribution to automation and data platform reliability at scale.</p>
+      </div>
+      <div class="cred-award-card">
+        <div class="cred-award-meta">Wipro · 2021</div>
+        <div class="cred-award-title">⚡ Dazzle Award</div>
+        <p class="cred-award-desc">Automation Excellence — pioneering initiatives that reduced manual reporting effort across the org.</p>
+      </div>
+      <div class="cred-award-card">
+        <div class="cred-award-meta">Wipro · 2021</div>
+        <div class="cred-award-title">🏅 Employee of the Year</div>
+        <p class="cred-award-desc">Illuminate award — highest recognition for cross-functional impact and delivery excellence.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="section-header">
+        <div class="section-label">05 — Contact</div>
+        <h2 class="section-title">Let's Connect</h2>
+      </div>
+      <p class="contact-desc">Open to discussing data engineering challenges, exciting opportunities, or collaboration on cloud data projects. Let's build something great together.</p>
+      <div class="contact-links">
+        <a class="contact-link" href="https://www.linkedin.com/in/aditya-kumar-gautam-421a09185/" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a class="contact-link" href="https://adi0208.github.io/Portfolio/" target="_blank" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Resume
+        </a>
+        <a class="contact-link" href="/cdn-cgi/l/email-protection#ceafaaa7bab7afabadfffefef88ea9a3afa7a2e0ada1a3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email Me
+        </a>
+        <a class="contact-link" href="tel:+919198882151">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Crafted with precision &nbsp;·&nbsp; <span>Aditya Kumar Gautam</span> &nbsp;·&nbsp; Cloud Data Engineer · Google Operations Center
+  </footer>
+
+  <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // Scroll reveal
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0, rootMargin: '0px 0px 0px 0px' });
+      reveals.forEach(el => observer.observe(el));
+
+      // Immediate reveal for all elements in viewport
+      const triggerReveal = () => {
+        reveals.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight + 100) el.classList.add('visible');
+        });
+      };
+      triggerReveal();
+      setTimeout(triggerReveal, 200);
+      setTimeout(triggerReveal, 600);
+      window.addEventListener('scroll', triggerReveal, { passive: true });
+
+      // Stagger card animations
+      document.querySelectorAll('.skills-grid, .projects-grid, .certs-grid, .achievements-list').forEach(grid => {
+        grid.querySelectorAll('.reveal').forEach((child, i) => {
+          child.style.transitionDelay = `${i * 0.07}s`;
+        });
+      });
+
+      // Hamburger
+      const hamburger = document.getElementById('hamburger');
+      const navLinks = document.querySelector('.nav-links');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+          hamburger.classList.toggle('open');
+          navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('open');
+            navLinks.classList.remove('open');
+          });
+        });
+      }
+
+      // Active nav
+      const sections = document.querySelectorAll('section[id]');
+      const navAnchors = document.querySelectorAll('.nav-links a');
+      const activateNav = () => {
+        let current = '';
+        sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 130) current = sec.id; });
+        navAnchors.forEach(a => {
+          a.classList.remove('active');
+          if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+        });
+      };
+      window.addEventListener('scroll', activateNav);
+      activateNav();
+
+      // Back to top
+      const backToTop = document.getElementById('backToTop');
+      if (backToTop) {
+        window.addEventListener('scroll', () => backToTop
